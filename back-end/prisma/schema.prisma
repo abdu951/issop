@@ -4,17 +4,14 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
-
-
-
 
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
   password  String
-  role      String
-  reports   Report[]
+  role      String   @default("CITIZEN")
   createdAt DateTime @default(now())
 }
 
@@ -24,8 +21,7 @@ model Report {
   description String
   imageUrl    String?
   location    String
-  status      String
+  status      String   @default("SUBMITTED")
   userId      String
-  user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
 }

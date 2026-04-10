@@ -1,4 +1,4 @@
-/*import pkg from '@prisma/client';
+import pkg from '@prisma/client';
 
 const { PrismaClient } = pkg;
 
@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 export default prisma; 
 
-import pkg from "@prisma/client";
+/*import pkg from "@prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
 
 const { PrismaClient } = pkg;
@@ -19,7 +19,7 @@ const prisma = new PrismaClient({
   adapter,
 });
 
-export default prisma; */
+export default prisma; 
 
 
 
@@ -38,4 +38,4 @@ const prisma = new PrismaClient({
   adapter,
 });
 
-export default prisma;
+export default prisma; */
