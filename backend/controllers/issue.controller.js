@@ -1,0 +1,176 @@
+import { PrismaClient } from "@prisma/client";
+import cloudinary from "../utils/cloudinary.js";
+import streamifier from "streamifier";
+
+const prisma = new PrismaClient();
+
+/**
+ * CREATE ISSUE
+ */
+/*export const createIssue = async (req, res) => {
+  try {
+    const { title, description, location } = req.body;
+
+    let imageUrl = null;
+
+    // Upload image to Cloudinary if exists
+    if (req.file) {
+      const result = await cloudinary.uploader.upload_stream(
+        { folder: "issues" },
+        (error, result) => {
+          if (error) throw error;
+          return result;
+        }
+      );
+
+      // safer approach (buffer upload)
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "issues" },
+        async (error, result) => {
+          if (error) return res.status(500).json({ error: error.message });
+
+          const issue = await prisma.issue.create({
+            data: {
+              title,
+              description,
+              location,
+              imageUrl: result.secure_url,
+              userId: req.user.id,
+            },
+          });
+
+          return res.status(201).json(issue);
+        }
+      );
+
+      stream.end(req.file.buffer);
+      return;
+    }
+
+    // No image case
+    const issue = await prisma.issue.create({
+      data: {
+        title,
+        description,
+        location,
+        userId: req.user.id,
+      },
+    });
+
+    res.status(201).json(issue);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}; */
+
+
+const uploadFromBuffer = (fileBuffer) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder: "issues" },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
+
+    streamifier.createReadStream(fileBuffer).pipe(stream);
+  });
+};
+
+
+export const createIssue = async (req, res) => {
+  try {
+    const { title, description, location } = req.body;
+
+    let imageUrl = null;
+
+    if (req.file) {
+      const result = await uploadFromBuffer(req.file.buffer);
+      imageUrl = result.secure_url;
+    }
+
+    const issue = await prisma.issue.create({
+      data: {
+        title,
+        description,
+        location,
+        imageUrl,
+        userId: req.user.id,
+      },
+    });
+
+    res.status(201).json(issue);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+/**
+ * GET ALL ISSUES
+ */
+export const getAllIssues = async (req, res) => {
+  try {
+    const issues = await prisma.issue.findMany({
+      include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    res.json(issues);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+/**
+ * GET SINGLE ISSUE
+ */
+export const getIssueById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const issue = await prisma.issue.findUnique({
+      where: { id },
+      include: {
+        user: true,
+      },
+    });
+
+    if (!issue) {
+      return res.status(404).json({ message: "Issue not found" });
+    }
+
+    res.json(issue);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+/**
+ * GET USER ISSUES
+ */
+export const getMyIssues = async (req, res) => {
+  try {
+    const issues = await prisma.issue.findMany({
+      where: {
+        userId: req.user.id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    res.json(issues);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
