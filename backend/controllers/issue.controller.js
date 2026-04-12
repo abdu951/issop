@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import cloudinary from "../utils/cloudinary.js";
 import streamifier from "streamifier";
+import { createNotification } from "../services/notification.service.js";
 
 const prisma = new PrismaClient();
 
@@ -202,7 +203,7 @@ export const getMyIssues = async (req, res) => {
 
 
 
-export const resolveIssue = async (req, res) => {
+/*export const resolveIssue = async (req, res) => {
   try {
     const { issueId } = req.body;
 
@@ -223,10 +224,42 @@ export const resolveIssue = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+}; */
+
+
+
+export const resolveIssue = async (req, res) => {
+  try {
+    const { issueId } = req.body;
+
+    const issue = await prisma.issue.findUnique({
+      where: { id: issueId },
+    });
+
+    if (issue.assignedToId !== req.user.id) {
+      return res.status(403).json({ message: "Not your issue" });
+    }
+
+    const updated = await prisma.issue.update({
+      where: { id: issueId },
+      data: { status: "RESOLVED" },
+    });
+
+    // 🔔 notify citizen
+    await createNotification({
+      userId: issue.userId,
+      message: "Your issue has been resolved",
+      type: "ISSUE_RESOLVED",
+      issueId,
+    });
+
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
-
-export const assignAgent = async (req, res) => {
+/*export const assignAgent = async (req, res) => {
   try {
     const { issueId, agentId } = req.body;
 
@@ -254,8 +287,44 @@ export const assignAgent = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-};
+}; */
 
+
+
+
+export const assignAgent = async (req, res) => {
+  try {
+    const { issueId, agentId } = req.body;
+
+    const issue = await prisma.issue.findUnique({
+      where: { id: issueId },
+    });
+
+    if (!issue) {
+      return res.status(404).json({ message: "Issue not found" });
+    }
+
+    const updated = await prisma.issue.update({
+      where: { id: issueId },
+      data: {
+        assignedToId: agentId,
+        status: "ASSIGNED",
+      },
+    });
+
+    // 🔔 notify agent
+    await createNotification({
+      userId: agentId,
+      message: "New issue assigned to you",
+      type: "ISSUE_ASSIGNED",
+      issueId,
+    });
+
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 
 export const respondToIssue = async (req, res) => {
