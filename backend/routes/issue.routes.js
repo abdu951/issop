@@ -4,7 +4,11 @@ import {
   getAllIssues,
   getIssueById,
   getMyIssues,
+  resolveIssue,
+  assignAgent,
+  respondToIssue,
 } from "../controllers/issue.controller.js";
+import { authorizeRoles } from "../middleware/role.middleware.js";
 
 import { authenticate } from "../middleware/auth.middleware.js";
 import { upload } from "../middleware/upload.middleware.js";
@@ -23,5 +27,23 @@ router.get("/", getAllIssues);
 // Get single issue
 router.get("/:id", getIssueById);
 
+// Resolve issue (agent/admin)
+router.post("/:id/resolve", authenticate, resolveIssue);
+
+// Assign agent (admin)
+router.post(
+  "/assign",
+  authenticate,
+  authorizeRoles("ADMIN"),
+  assignAgent
+);
+
+
+router.post(
+  "/respond",
+  authenticate,
+  authorizeRoles("AGENT"),
+  respondToIssue
+);
 
 export default router;

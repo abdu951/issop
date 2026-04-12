@@ -109,7 +109,7 @@ export const createIssue = async (req, res) => {
 /**
  * GET ALL ISSUES
  */
-export const getAllIssues = async (req, res) => {
+/*export const getAllIssues = async (req, res) => {
   try {
     const issues = await prisma.issue.findMany({
       include: {
@@ -119,6 +119,31 @@ export const getAllIssues = async (req, res) => {
             email: true,
           },
         },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    res.json(issues);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}; */
+
+
+export const getAllIssues = async (req, res) => {
+  try {
+    const { status, location } = req.query;
+
+    const issues = await prisma.issue.findMany({
+      where: {
+        status: status || undefined,
+        location: location || undefined,
+      },
+      include: {
+        user: true,
+        assignedTo: true,
       },
       orderBy: {
         createdAt: "desc",
@@ -170,6 +195,92 @@ export const getMyIssues = async (req, res) => {
     });
 
     res.json(issues);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
+export const resolveIssue = async (req, res) => {
+  try {
+    const { issueId } = req.body;
+
+    const issue = await prisma.issue.findUnique({
+      where: { id: issueId },
+    });
+
+    if (issue.assignedToId !== req.user.id) {
+      return res.status(403).json({ message: "Not your issue" });
+    }
+
+    const updated = await prisma.issue.update({
+      where: { id: issueId },
+      data: { status: "RESOLVED" },
+    });
+
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+export const assignAgent = async (req, res) => {
+  try {
+    const { issueId, agentId } = req.body;
+
+    // ✅ DEBUG HERE (correct place)
+    console.log("issueId:", issueId);
+    console.log("agentId:", agentId);
+
+    const issue = await prisma.issue.findUnique({
+      where: { id: issueId },
+    });
+
+    if (!issue) {
+      return res.status(404).json({ message: "Issue not found" });
+    }
+
+    const updated = await prisma.issue.update({
+      where: { id: issueId },
+      data: {
+        assignedToId: agentId,
+        status: "ASSIGNED",
+      },
+    });
+
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
+export const respondToIssue = async (req, res) => {
+  try {
+    const { issueId, action } = req.body;
+
+    const issue = await prisma.issue.findUnique({
+      where: { id: issueId },
+    });
+
+    if (issue.assignedToId !== req.user.id) {
+      return res.status(403).json({ message: "Not your issue" });
+    }
+
+    let status;
+
+    if (action === "accept") status = "IN_PROGRESS";
+    if (action === "reject") status = "REJECTED";
+
+    const updated = await prisma.issue.update({
+      where: { id: issueId },
+      data: { status },
+    });
+
+    res.json(updated);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

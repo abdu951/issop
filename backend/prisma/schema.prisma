@@ -7,17 +7,40 @@ generator client {
   provider = "prisma-client-js"
 }
 
+
+
+enum Role {
+  CITIZEN
+  ADMIN
+  AGENT
+}
+
+enum IssueStatus {
+  PENDING
+  ASSIGNED
+  IN_PROGRESS
+  RESOLVED
+  REJECTED
+}
+
+
+
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
   password  String
+  role      Role     @default(CITIZEN)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   refreshTokens RefreshToken[]
 
-  issues Issue[]
+  issues        Issue[] @relation("UserIssues")
+  assignedIssues Issue[] @relation("AssignedIssues")
 }
+
+
 
 model RefreshToken {
   id        String   @id @default(uuid())
@@ -28,16 +51,22 @@ model RefreshToken {
   createdAt DateTime @default(now())
 }
 
+
 model Issue {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   title       String
   description String
   imageUrl    String?
   location    String
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status      IssueStatus @default(PENDING)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  userId      String
+  user        User @relation("UserIssues", fields: [userId], references: [id])
+
+  assignedToId String?
+  assignedTo   User? @relation("AssignedIssues", fields: [assignedToId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
