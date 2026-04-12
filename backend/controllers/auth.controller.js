@@ -150,3 +150,21 @@ export const refresh = async (req, res) => {
     res.status(403).json({ error: err.message });
   }
 };
+
+
+
+// get all agents
+export const getAgents = async (req, res) => {
+  const agents = await prisma.user.findMany({
+    where: { role: "AGENT" },
+    select: { id: true, email: true },
+  });
+
+  res.json(agents);
+};
+
+
+// promote user (admin only later)
+//PATCH /api/users/role
+
+//GET /api/users?role=AGENT

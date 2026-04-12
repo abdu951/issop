@@ -28,7 +28,7 @@ router.get("/", getAllIssues);
 router.get("/:id", getIssueById);
 
 // Resolve issue (agent/admin)
-router.post("/:id/resolve", authenticate, resolveIssue);
+router.post("/resolve", authenticate, authorizeRoles("AGENT"), resolveIssue);
 
 // Assign agent (admin)
 router.post(

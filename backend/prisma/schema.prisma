@@ -70,3 +70,19 @@ model Issue {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+
+
+model Notification {
+  id        String   @id @default(uuid())
+  message   String
+  type      String
+  userId    String
+  issueId   String?
+  isRead    Boolean  @default(false)
+
+  user      User     @relation(fields: [userId], references: [id])
+  issue     Issue?   @relation(fields: [issueId], references: [id])
+
+  createdAt DateTime @default(now())
+}
