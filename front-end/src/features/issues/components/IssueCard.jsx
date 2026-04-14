@@ -2,12 +2,17 @@
 
 import { useAuthStore } from "@/features/auth/store";
 import { useAssignIssue, useResolveIssue } from "@/features/issues/hooks";
+import { useRole } from "@/hooks/useRole";
+
 
 export default function IssueCard({ issue }) {
   const user = useAuthStore((s) => s.user);
 
   const assign = useAssignIssue();
   const resolve = useResolveIssue();
+  const { isAdmin, isAgent } = useRole();
+  
+
 
   return (
     <div className="border p-4 rounded">
@@ -17,7 +22,7 @@ export default function IssueCard({ issue }) {
       <p>Status: {issue.status}</p>
 
       {/* ADMIN */}
-      {user?.role === "ADMIN" && (
+      {isAdmin && (
         <button
           onClick={() =>
             assign.mutate({
@@ -32,7 +37,7 @@ export default function IssueCard({ issue }) {
       )}
 
       {/* AGENT */}
-      {user?.role === "AGENT" && (
+      {isAgent && (
         <button
           onClick={() => resolve.mutate(issue.id)}
           className="bg-green-500 text-white px-3 py-1"
@@ -40,6 +45,12 @@ export default function IssueCard({ issue }) {
           Resolve
         </button>
       )}
+
     </div>
   );
 }
+
+
+
+
+
