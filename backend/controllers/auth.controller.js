@@ -28,9 +28,11 @@ export const register = async (req, res) => {
         password: hashedPassword,
       },
     });
-
+    
+    console.log("REGISTERED USER:", user); // 👈 ADD THIS
     res.status(201).json({ message: "User created", user });
   } catch (err) {
+    console.error("REGISTER ERROR:", err); // 👈 ADD THIS
     res.status(500).json({ error: err.message });
   }
 };
@@ -78,8 +80,10 @@ export const login = async (req, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .json({ message: "Logged in" });
+      console.log("USER LOGGED IN:", user); // 👈 ADD THIS
 
   } catch (err) {
+    console.error("LOGIN ERROR:", err); // 👈 ADD THIS
     res.status(500).json({ error: err.message });
   }
 };
