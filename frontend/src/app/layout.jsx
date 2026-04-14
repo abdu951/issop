@@ -14,3 +14,7 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
+{/*import { Toaster } from "react-hot-toast";
+
+<Toaster position="top-right" />*/}

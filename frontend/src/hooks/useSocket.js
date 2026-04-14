@@ -21,3 +21,13 @@ export const useSocket = () => {
     };
   }, [token]);
 };
+
+
+{/*import toast from "react-hot-toast";
+
+socket.on("notification", (data) => {
+  addNotification(data);
+
+  // 🔥 show toast
+  toast.success(data.message);
+}); */}
