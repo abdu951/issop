@@ -1,4 +1,4 @@
-import { create } from "zustand";
+{/*import { create } from "zustand";
 
 export const useAuthStore = create((set) => ({
   user: null,
@@ -13,4 +13,16 @@ export const useAuthStore = create((set) => ({
     localStorage.removeItem("token");
     set({ user: null, token: null });
   },
+})); */}
+
+
+
+import { create } from "zustand";
+
+export const useAuthStore = create((set) => ({
+  user: null,
+
+  setUser: (user) => set({ user }),
+
+  logout: () => set({ user: null }),
 }));

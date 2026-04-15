@@ -1,4 +1,4 @@
-import axios from "axios";
+{/*import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://localhost:5000/api",
@@ -14,6 +14,17 @@ api.interceptors.request.use((config) => {
   }
 
   return config;
+});
+
+export default api; */}
+
+
+
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "http://localhost:5000/api",
+  withCredentials: true, // 🔥 REQUIRED for cookies
 });
 
 export default api;

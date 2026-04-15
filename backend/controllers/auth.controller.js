@@ -92,6 +92,7 @@ export const login = async (req, res) => {
  * GET CURRENT USER (AUTH CHECK)
  */
 export const getMe = async (req, res) => {
+  console.log("GET ME:", req.user); // 👈 ADD THIS
   res.json({ user: req.user });
 };
 

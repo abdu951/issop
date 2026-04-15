@@ -100,7 +100,8 @@ export const createIssue = async (req, res) => {
         userId: req.user.id,
       },
     });
-
+    
+    console.log("CREATED ISSUE:", issue); // 👈 ADD THIS
     res.status(201).json(issue);
   } catch (err) {
     res.status(500).json({ error: err.message });

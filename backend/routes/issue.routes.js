@@ -16,16 +16,16 @@ import { upload } from "../middleware/upload.middleware.js";
 const router = express.Router();
 
 // Create issue (auth + upload image)
-router.post("/", authenticate, upload.single("image"), createIssue);
+router.post("/", authenticate, authorizeRoles("CITIZEN"), upload.single("image"), createIssue);
 
 // Get logged-in user's issues
-router.get("/me", authenticate, getMyIssues);
+router.get("/me", authenticate, authorizeRoles("CITIZEN"), getMyIssues);
 
 // Get all issues
-router.get("/", getAllIssues);
+router.get("/", authenticate, authorizeRoles("ADMIN"), getAllIssues);
 
 // Get single issue
-router.get("/:id", getIssueById);
+router.get("/:id", authenticate, getIssueById);
 
 // Resolve issue (agent/admin)
 router.post("/resolve", authenticate, authorizeRoles("AGENT"), resolveIssue);

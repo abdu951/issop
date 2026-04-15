@@ -2,7 +2,9 @@
 
 import { useAuthStore } from "@/features/auth/store";
 import { useAssignIssue, useResolveIssue } from "@/features/issues/hooks";
-import { useRole } from "@/hooks/useRole";
+import { useState } from "react";
+import AgentSelect from "./AgentSelect";
+
 
 
 export default function IssueCard({ issue }) {
@@ -10,9 +12,7 @@ export default function IssueCard({ issue }) {
 
   const assign = useAssignIssue();
   const resolve = useResolveIssue();
-  const { isAdmin, isAgent } = useRole();
-  
-
+  const [agentId, setAgentId] = useState("");
 
   return (
     <div className="border p-4 rounded">
@@ -22,7 +22,7 @@ export default function IssueCard({ issue }) {
       <p>Status: {issue.status}</p>
 
       {/* ADMIN */}
-      {isAdmin && (
+      {/*{user?.role === "ADMIN" && (
         <button
           onClick={() =>
             assign.mutate({
@@ -34,10 +34,30 @@ export default function IssueCard({ issue }) {
         >
           Assign
         </button>
-      )}
+      )} */}
+
+
+      {user?.role === "ADMIN" && (
+  <div className="space-x-2">
+    <AgentSelect onSelect={setAgentId} />
+
+    <button
+      disabled={!agentId}
+      onClick={() =>
+        assign.mutate({
+          issueId: issue.id,
+          agentId,
+        })
+      }
+      className="bg-blue-500 text-white px-3 py-1"
+    >
+      Assign
+    </button>
+  </div>
+)}
 
       {/* AGENT */}
-      {isAgent && (
+      {user?.role === "AGENT" && (
         <button
           onClick={() => resolve.mutate(issue.id)}
           className="bg-green-500 text-white px-3 py-1"
@@ -45,12 +65,7 @@ export default function IssueCard({ issue }) {
           Resolve
         </button>
       )}
-
     </div>
   );
 }
-
-
-
-
 

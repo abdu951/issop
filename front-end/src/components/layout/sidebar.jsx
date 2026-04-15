@@ -13,9 +13,9 @@ export default function Sidebar() {
 
         {isCitizen && <Link href="/issues/my">My Issues</Link>}
 
-        {isAdmin && <Link href="/admin">Admin Panel</Link>}
+        {isAdmin && <Link href="/issues">Admin Panel</Link>}
 
-        {isAgent && <Link href="/issues">Assigned Issues</Link>}
+        {isAgent && <Link href="/issues/assign">Assigned Issues</Link>}
       </nav>
     </div>
   );
