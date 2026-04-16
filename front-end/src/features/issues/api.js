@@ -11,10 +11,18 @@ export const createIssue = async (data) => {
 };
 
 // get all issues
-export const getAllIssues = async () => {
+{/*export const getAllIssues = async () => {
   const res = await api.get("/issues");
   return res.data;
+}; */}
+
+
+export const getAllIssues = (status) => {
+  return api.get("/issues", {
+    params: { status }, // 👉 ?status=OPEN
+  });
 };
+
 
 // get issue by id
 export const getIssueById = async (id) => {

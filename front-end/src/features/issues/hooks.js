@@ -11,11 +11,22 @@ import {
 const queryClient = useQueryClient;
 
 // GET ALL
-export const useAllIssues = () =>
+{/*export const useAllIssues = () =>
   useQuery({
     queryKey: ["issues"],
     queryFn: getAllIssues,
+  }); */}
+
+
+
+export const useAllIssues = (status) => {
+  return useQuery({
+    queryKey: ["issues", status], // 🔥 VERY IMPORTANT
+    queryFn: () => getAllIssues(status),
   });
+};
+
+
 
 // GET BY ID
 export const useIssueById = (id) =>

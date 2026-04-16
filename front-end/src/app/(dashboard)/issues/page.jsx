@@ -2,16 +2,14 @@
 
 import { useAllIssues } from "@/features/issues/hooks";
 import IssueList from "@/features/issues/components/IssueList";
+import { useState } from "react";
+
+import IssuesFilter from "@/features/issues/components/Filter";
 
 export default function IssuesPage() {
-  const { data, isLoading } = useAllIssues();
-
-  if (isLoading) return <p>Loading...</p>;
-
   return (
-    <div>
-      <h1 className="text-xl font-bold mb-4">All Issues</h1>
-      <IssueList issues={data} />
+    <div >
+      < IssuesFilter />
     </div>
   );
 }

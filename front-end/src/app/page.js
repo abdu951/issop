@@ -23,13 +23,12 @@ export default function HomePage() {
   );
 } */}
 
-import Image from "next/image";
-import CreateIssueForm  from "@/features/issues/components/CreateIssueForm";
+import IssuesFilter from "@/features/issues/components/Filter";
 
 export default function Home() {
   return (
     <div >
-      < CreateIssueForm />
+      < IssuesFilter />
     </div>
   );
 }
