@@ -21,21 +21,6 @@ export default function IssueCard({ issue }) {
       <p className="text-sm">{issue.location}</p>
       <p>Status: {issue.status}</p>
 
-      {/* ADMIN */}
-      {/*{user?.role === "ADMIN" && (
-        <button
-          onClick={() =>
-            assign.mutate({
-              issueId: issue.id,
-              agentId: "AGENT_ID_HERE",
-            })
-          }
-          className="bg-blue-500 text-white px-3 py-1"
-        >
-          Assign
-        </button>
-      )} */}
-
 
       {user?.role === "ADMIN" && (
   <div className="space-x-2">

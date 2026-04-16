@@ -26,13 +26,11 @@ export default function DashboardLayout({ children }) {
 
   if (!isLoading) {
     return (
-        <div className="flex">
-      <Sidebar />
-      <div className="flex-1">
+      <div>
         <Navbar />
         <div className="p-6">{children}</div>
       </div>
-    </div>
+
     );
   }
 

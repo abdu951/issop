@@ -79,7 +79,7 @@ export const login = async (req, res) => {
         ...COOKIE_OPTIONS,
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
-      .json({ message: "Logged in" });
+      .json({ message: "Logged in", user: { role: user.role } });
       console.log("USER LOGGED IN:", user); // 👈 ADD THIS
 
   } catch (err) {

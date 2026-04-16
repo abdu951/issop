@@ -59,7 +59,6 @@ import {
 import { useAuthStore } from "./store";
 import { useRouter } from "next/navigation";
 
-
 // 🔐 REGISTER
 export const useRegister = () => {
   const router = useRouter();
@@ -74,13 +73,45 @@ export const useRegister = () => {
 
 
 // 🔐 LOGIN
-export const useLogin = () => {
+{/*export const useLogin = () => {
   const router = useRouter();
-
+  const { isAdmin, isAgent } = useRole();
   return useMutation({
     mutationFn: loginUser,
     onSuccess: () => {
-      router.push("/issues"); // go to dashboard
+      router.push(
+     isAdmin
+    ? "/issues"
+    : isAgent
+    ? "/issues/assign"
+    : "/issues/my"
+);
+    },
+  });
+}; */}
+
+
+export const useLogin = () => {
+  const router = useRouter();
+  const setUser = useAuthStore((s) => s.setUser);
+
+  return useMutation({
+    mutationFn: loginUser,
+
+    onSuccess: (res) => {
+      const user = res.data.user; // ✅ get from backend
+
+      // ✅ store in Zustand FIRST
+      setUser(user);
+
+      // ✅ then redirect using REAL data
+      if (user.role === "ADMIN") {
+        router.push("/issues");
+      } else if (user.role === "AGENT") {
+        router.push("/issues/assign");
+      } else {
+        router.push("/issues/my");
+      }
     },
   });
 };

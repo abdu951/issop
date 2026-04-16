@@ -2,6 +2,7 @@
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/react-query";
+import "./globals.css";
 
 export default function RootLayout({ children }) {
   return (
