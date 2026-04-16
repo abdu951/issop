@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getAllIssues,
+  getIssueById,
   getMyIssues,
   createIssue,
   assignIssue,
@@ -14,6 +15,13 @@ export const useAllIssues = () =>
   useQuery({
     queryKey: ["issues"],
     queryFn: getAllIssues,
+  });
+
+// GET BY ID
+export const useIssueById = (id) =>
+  useQuery({
+    queryKey: ["issue", id],
+    queryFn: () => getIssueById(id),
   });
 
 // GET MY

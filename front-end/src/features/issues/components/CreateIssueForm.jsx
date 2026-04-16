@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import { useCreateIssue } from "@/features/issues/hooks";
+import { IoArrowBack } from "react-icons/io5";
+import { useRouter } from "next/navigation";  
 
 export default function CreateIssueForm() {
   const { mutate } = useCreateIssue();
+  const router = useRouter();
 
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
-  const [loading, setLoading] = useState(false);
 
   const [formDataState, setFormDataState] = useState({
     title: "",
@@ -32,14 +34,6 @@ export default function CreateIssueForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!image) {
-      toast.error("Image is required");
-      return;
-    }
-
-    try {
-      setLoading(true);
-
       const formData = new FormData();
       formData.append("title", formDataState.title);
       formData.append("description", formDataState.description);
@@ -47,8 +41,6 @@ export default function CreateIssueForm() {
       formData.append("image", image);
 
      mutate(formData);
-
-      toast.success("Opportunity created successfully");
 
       // Reset form
       setFormDataState({
@@ -59,22 +51,13 @@ export default function CreateIssueForm() {
       setImage(null);
       setPreview(null);
 
-    } catch (error) {
-      if (error.response) {
-        toast.error(error.response.data.detail);
-      } else {
-        toast.error("Something went wrong");
-      }
-    } finally {
-      setLoading(false);
-    }
   };
 
 
   return (
     <div className="flex justify-center p-8 bg-gray-100 min-h-screen">
         
-        <div onClick={() => navigate("/")} className="flex gap-2 cursor-pointer text-blue-600">
+        <div onClick={() => router.push("/issues/my")} className="flex gap-2 cursor-pointer text-blue-600">
             <IoArrowBack size={20} />
             <p>Back to list</p>
             
@@ -166,14 +149,9 @@ export default function CreateIssueForm() {
           {/* Submit */}
           <button
             type="submit"
-            disabled={loading}
-            className={`w-full py-3 rounded-lg text-white font-medium transition ${
-              loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
-            }`}
+            className={'w-full py-3 rounded-lg text-white bg-blue-500 font-medium transition'}
           >
-            {loading ? "Creating..." : "Create Opportunity"}
+            Create Opportunity
           </button>
 
         </form>

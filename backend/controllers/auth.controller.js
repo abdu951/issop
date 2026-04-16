@@ -73,7 +73,7 @@ export const login = async (req, res) => {
     res
       .cookie("accessToken", accessToken, {
         ...COOKIE_OPTIONS,
-        maxAge: 15 * 60 * 1000,
+        maxAge: 30 * 60 * 1000,
       })
       .cookie("refreshToken", refreshToken, {
         ...COOKIE_OPTIONS,

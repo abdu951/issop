@@ -104,6 +104,7 @@ export const createIssue = async (req, res) => {
     console.log("CREATED ISSUE:", issue); // 👈 ADD THIS
     res.status(201).json(issue);
   } catch (err) {
+    console.error("CREATE ISSUE ERROR:", err); // 👈 ADD THIS
     res.status(500).json({ error: err.message });
   }
 };
@@ -136,12 +137,11 @@ export const createIssue = async (req, res) => {
 
 export const getAllIssues = async (req, res) => {
   try {
-    const { status, location } = req.query;
+    const { status } = req.query;
 
     const issues = await prisma.issue.findMany({
       where: {
-        status: status || undefined,
-        location: location || undefined,
+        status: status || undefined
       },
       include: {
         user: true,

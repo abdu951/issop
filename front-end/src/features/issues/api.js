@@ -16,6 +16,12 @@ export const getAllIssues = async () => {
   return res.data;
 };
 
+// get issue by id
+export const getIssueById = async (id) => {
+  const res = await api.get(`/issues/${id}`);
+  return res.data;
+};
+
 // get my issues
 export const getMyIssues = async () => {
   const res = await api.get("/issues/me");

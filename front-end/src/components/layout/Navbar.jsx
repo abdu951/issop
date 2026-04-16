@@ -24,7 +24,7 @@ export default function Navbar() {
    <div className="max-h-18 flex items-center justify-between px-4 md:px-8 border-b border-gray-300 py-3 bg-black/60 transition-all duration-300">
                 <h1 className="text-2xl font-bold text-white">{greeting}</h1>
                 <div className="flex items-center gap-5 text-white">
-                    <p> <Bell /> </p>
+                     <Bell /> 
                     <button onClick={logout} className='border rounded-full text-sm px-4 py-1'>Logout</button>
                 </div>
         </div>
