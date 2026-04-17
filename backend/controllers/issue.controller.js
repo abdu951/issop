@@ -5,65 +5,6 @@ import { createNotification } from "../services/notification.service.js";
 
 const prisma = new PrismaClient();
 
-/**
- * CREATE ISSUE
- */
-/*export const createIssue = async (req, res) => {
-  try {
-    const { title, description, location } = req.body;
-
-    let imageUrl = null;
-
-    // Upload image to Cloudinary if exists
-    if (req.file) {
-      const result = await cloudinary.uploader.upload_stream(
-        { folder: "issues" },
-        (error, result) => {
-          if (error) throw error;
-          return result;
-        }
-      );
-
-      // safer approach (buffer upload)
-      const stream = cloudinary.uploader.upload_stream(
-        { folder: "issues" },
-        async (error, result) => {
-          if (error) return res.status(500).json({ error: error.message });
-
-          const issue = await prisma.issue.create({
-            data: {
-              title,
-              description,
-              location,
-              imageUrl: result.secure_url,
-              userId: req.user.id,
-            },
-          });
-
-          return res.status(201).json(issue);
-        }
-      );
-
-      stream.end(req.file.buffer);
-      return;
-    }
-
-    // No image case
-    const issue = await prisma.issue.create({
-      data: {
-        title,
-        description,
-        location,
-        userId: req.user.id,
-      },
-    });
-
-    res.status(201).json(issue);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-}; */
-
 
 const uploadFromBuffer = (fileBuffer) => {
   return new Promise((resolve, reject) => {
@@ -109,30 +50,6 @@ export const createIssue = async (req, res) => {
   }
 };
 
-/**
- * GET ALL ISSUES
- */
-/*export const getAllIssues = async (req, res) => {
-  try {
-    const issues = await prisma.issue.findMany({
-      include: {
-        user: {
-          select: {
-            id: true,
-            email: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-
-    res.json(issues);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-}; */
 
 
 export const getAllIssues = async (req, res) => {
@@ -204,94 +121,6 @@ export const getMyIssues = async (req, res) => {
 
 
 
-/*export const resolveIssue = async (req, res) => {
-  try {
-    const { issueId } = req.body;
-
-    const issue = await prisma.issue.findUnique({
-      where: { id: issueId },
-    });
-
-    if (issue.assignedToId !== req.user.id) {
-      return res.status(403).json({ message: "Not your issue" });
-    }
-
-    const updated = await prisma.issue.update({
-      where: { id: issueId },
-      data: { status: "RESOLVED" },
-    });
-
-    res.json(updated);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-}; */
-
-
-
-export const resolveIssue = async (req, res) => {
-  try {
-    const { issueId } = req.body;
-
-    const issue = await prisma.issue.findUnique({
-      where: { id: issueId },
-    });
-
-    if (issue.assignedToId !== req.user.id) {
-      return res.status(403).json({ message: "Not your issue" });
-    }
-
-    const updated = await prisma.issue.update({
-      where: { id: issueId },
-      data: { status: "RESOLVED" },
-    });
-
-    // 🔔 notify citizen
-    await createNotification({
-      userId: issue.userId,
-      message: "Your issue has been resolved",
-      type: "ISSUE_RESOLVED",
-      issueId,
-    });
-
-    res.json(updated);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-/*export const assignAgent = async (req, res) => {
-  try {
-    const { issueId, agentId } = req.body;
-
-    // ✅ DEBUG HERE (correct place)
-    console.log("issueId:", issueId);
-    console.log("agentId:", agentId);
-
-    const issue = await prisma.issue.findUnique({
-      where: { id: issueId },
-    });
-
-    if (!issue) {
-      return res.status(404).json({ message: "Issue not found" });
-    }
-
-    const updated = await prisma.issue.update({
-      where: { id: issueId },
-      data: {
-        assignedToId: agentId,
-        status: "ASSIGNED",
-      },
-    });
-
-    res.json(updated);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-}; */
-
-
-
 
 export const assignAgent = async (req, res) => {
   try {
@@ -348,6 +177,39 @@ export const respondToIssue = async (req, res) => {
     const updated = await prisma.issue.update({
       where: { id: issueId },
       data: { status },
+    });
+
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
+export const resolveIssue = async (req, res) => {
+  try {
+    const { issueId } = req.body;
+
+    const issue = await prisma.issue.findUnique({
+      where: { id: issueId },
+    });
+
+    if (issue.assignedToId !== req.user.id) {
+      return res.status(403).json({ message: "Not your issue" });
+    }
+
+    const updated = await prisma.issue.update({
+      where: { id: issueId },
+      data: { status: "RESOLVED" },
+    });
+
+    // 🔔 notify citizen
+    await createNotification({
+      userId: issue.userId,
+      message: "Your issue has been resolved",
+      type: "ISSUE_RESOLVED",
+      issueId,
     });
 
     res.json(updated);
