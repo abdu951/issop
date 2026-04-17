@@ -1,6 +1,6 @@
 # Issue Reporting & Management System
 
-A full-stack system that allows citizens to report public issues, administrators to assign them, and agents to resolve them — with real-time notifications.
+A full-stack system that allows citizens to report public issues, administrators to assign them, and agents to resolve them with real-time notifications.
 
 
 ## Features
