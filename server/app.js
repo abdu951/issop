@@ -1,9 +1,9 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-import authRoutes from "./routes/auth.routes.js";
-import issueRoutes from "./routes/issue.routes.js";
-import notificationRoutes from "./routes/notification.routes.js"
-import userRoutes from "./routes/user.routes.js";
+import authRoutes from "./modules/auth/auth.routes.js";
+import issueRoutes from "./modules/auth/auth.routes.js";
+import notificationRoutes from "./modules/auth/auth.routes.js";
+import userRoutes from "./modules/auth/auth.routes.js";
 import cors from "cors";
 
 const app = express();
