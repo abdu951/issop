@@ -1,6 +1,6 @@
 # Issue Reporting & Management System
 
-A full-stack system that allows citizens to report public issues, administrators to assign them, and agents to resolve them with real-time notifications.
+A full-stack system that allows citizens to report public issues, administrators to assign them, and agents to resolve them with real time notifications.
 
 
 ## Features
@@ -19,6 +19,7 @@ A full-stack system that allows citizens to report public issues, administrators
 
 * **Backend**: Node.js, Express.js
 * **Frontend**: Next.js + Tailwind CSS
+* **state management**: zustand + react query
 * **Database**: Prisma ORM + PostgreSQL
 * **Authentication**: JWT (access tokens)
 * **File Upload**: Cloudinary
