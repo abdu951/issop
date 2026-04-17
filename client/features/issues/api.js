@@ -11,10 +11,10 @@ export const createIssue = async (data) => {
 };
 
 // get all issues
-{/*export const getAllIssues = async () => {
+export const getAllIssues = async () => {
   const res = await api.get("/issues");
   return res.data;
-}; */}
+}; 
 
 
 export const FilterGet = (status) => {

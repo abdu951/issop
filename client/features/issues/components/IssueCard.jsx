@@ -59,20 +59,3 @@ export default function IssueCard({ issue }) {
 
 
 
-{/*import { useRole } from "@/hooks/useRole";
-
-const { isAdmin, isAgent } = useRole();
-
-{isAdmin && <AssignButton />}
-{isAgent && <ResolveButton />}*/}
-
-
-{/*<div className="bg-white shadow rounded p-4 hover:shadow-md transition">
-  <h2 className="font-semibold text-lg">{issue.title}</h2>
-  <p className="text-gray-600">{issue.description}</p>
-
-  <div className="flex justify-between mt-2 text-sm">
-    <span className="text-blue-500">{issue.location}</span>
-    <span className="font-medium">{issue.status}</span>
-  </div>
-</div> */}

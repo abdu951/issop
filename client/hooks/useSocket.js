@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { connectSocket } from "@/lib/socket";
 import { useAuthStore } from "@/features/auth/store";
 import { useNotificationStore } from "@/features/notifications/store";
+import toast from "react-hot-toast";
 
 export const useSocket = () => {
   const token = useAuthStore((s) => s.token);
@@ -14,6 +15,7 @@ export const useSocket = () => {
 
     socket.on("notification", (data) => {
       addNotification(data);
+      toast.success(data.message);
     });
 
     return () => {
@@ -23,11 +25,3 @@ export const useSocket = () => {
 };
 
 
-{/*import toast from "react-hot-toast";
-
-socket.on("notification", (data) => {
-  addNotification(data);
-
-  // 🔥 show toast
-  toast.success(data.message);
-}); */}

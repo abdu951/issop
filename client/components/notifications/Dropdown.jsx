@@ -26,21 +26,3 @@ export default function NotificationDropdown() {
     </div>
   );
 }
-
-
-{/*import { useRouter } from "next/navigation";
-import { useMarkAsRead } from "@/features/notifications/hooks";
-import { useNotificationStore } from "@/features/notifications/store";
-
-const router = useRouter();
-const markRead = useMarkAsRead();
-const markOneRead = useNotificationStore((s) => s.markOneRead);
-
-const handleClick = (n) => {
-  markRead.mutate(n.id);
-  markOneRead(n.id);
-
-  if (n.issueId) {
-    router.push(`/issues/${n.issueId}`);
-  }
-};  */}

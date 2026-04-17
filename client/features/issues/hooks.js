@@ -7,7 +7,7 @@ import {
   assignIssue,
   resolveIssue,
   respondToIssue,
-  FilterGet
+  FilterGet,
 } from "./api";
 
 import toast from "react-hot-toast"
@@ -15,11 +15,11 @@ import toast from "react-hot-toast"
 const queryClient = useQueryClient;
 
 // GET ALL
-{/*export const useAllIssues = () =>
+export const useAllIssues = () =>
   useQuery({
     queryKey: ["issues"],
     queryFn: getAllIssues,
-  }); */}
+  });
 
 
 

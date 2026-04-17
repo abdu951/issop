@@ -13,7 +13,7 @@ export default function IssuesFilter() {
 
   return (
     <div className="space-y-4">
-      {/* 🔽 FILTER DROPDOWN */}
+      {/* FILTER DROPDOWN */}
       <div className="flex justify-between items-center">
         <h1 className="text-xl font-bold">Issues</h1>
 
@@ -31,7 +31,7 @@ export default function IssuesFilter() {
         </select>
       </div>
 
-      {/* 📦 LIST */}
+      {/*LIST */}
       {isLoading ? (
         <p>Loading...</p>
       ) : (
