@@ -8,5 +8,5 @@ export default function MyIssuesPage() {
 
   if (isLoading) return <p>Loading...</p>;
 
-  return <IssueList issues={data} />;
+  return <IssueList issues={data?.data || []} />;
 }

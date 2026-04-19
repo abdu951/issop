@@ -5,7 +5,7 @@ import { AppError } from "../../utils/AppError.js";
 const ALLOWED_ROLES = ["ADMIN", "AGENT"];
 
 export const createUser = async (data, currentUser) => {
-  // 🔐 Authorization check (better here than controller)
+  
   if (currentUser.role !== "ADMIN") {
     throw new AppError("Forbidden", 403);
   }
@@ -31,9 +31,9 @@ export const createUser = async (data, currentUser) => {
     role,
   });
 
-  // 🔒 remove password before returning
+  
   const { password: _, ...safeUser } = user;
-
+  
   return safeUser;
 };
 

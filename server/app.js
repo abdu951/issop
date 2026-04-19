@@ -4,6 +4,7 @@ import authRoutes from "./modules/auth/auth.routes.js";
 import issueRoutes from "./modules/auth/auth.routes.js";
 import notificationRoutes from "./modules/auth/auth.routes.js";
 import userRoutes from "./modules/auth/auth.routes.js";
+import { errorHandler } from "./middleware/error.middleware.js";
 import cors from "cors";
 
 const app = express();
@@ -18,5 +19,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/issues", issueRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/users", userRoutes);
+
+
+app.use(errorHandler);
 
 export default app;

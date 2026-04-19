@@ -6,13 +6,14 @@ import { useState } from "react";
 import AgentSelect from "./AgentSelect";
 import IssueActions from "./IssueActions";
 
-const [agentId, setAgentId] = useState("");
+
 
 export default function IssueCard({ issue }) {
   const user = useAuthStore((s) => s.user);
 
   const assign = useAssignIssue();
   const resolve = useResolveIssue();
+  const [agentId, setAgentId] = useState("");
 
   return (
     <div className="border p-4 rounded">

@@ -16,14 +16,7 @@ export default function CreateUserForm() {
   });
 
   // 🔐 UI protection
-  if (!isAdmin) {
-    return (
-      <p className="text-red-500 text-center mt-10">
-        Access denied
-      </p>
-    );
-  }
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     mutate(form);
