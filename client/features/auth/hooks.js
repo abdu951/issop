@@ -7,6 +7,7 @@ import {
 } from "./api";
 import { useAuthStore } from "./store";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 // REGISTER
 export const useRegister = () => {
@@ -75,6 +76,7 @@ export const useLogout = () => {
     onSuccess: () => {
       logout();
       router.push("/login");
+      toast.success("Logged out successfully");
     },
   });
 };

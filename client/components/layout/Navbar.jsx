@@ -1,12 +1,11 @@
 "use client";
 
 import Bell from "../notifications/Bell";
-import { useAuthStore } from "@/features/auth/store";
-import { useRouter } from "next/navigation";
+import { useLogout } from "@/features/auth/hooks";
 
 export default function Navbar() {
-  const logout = useAuthStore((s) => s.logout);
-  const router = useRouter()
+  const { mutate, isPending } = useLogout();
+
 
 
   return (
@@ -17,7 +16,8 @@ export default function Navbar() {
         <Bell />
 
         <button
-          onClick={logout}
+          onClick={() => mutate()}
+          disabled={isPending}
           className="cursor-pointer bg-red-500 text-white px-3 py-1 rounded"
         >
           Logout

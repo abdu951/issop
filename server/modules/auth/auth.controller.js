@@ -39,7 +39,11 @@ export const logout = asyncHandler(async (req, res) => {
     throw new AppError("No token found", 400);
   }
 
-  res.clearCookie("accessToken").json({
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false,
+  }).json({
     message: "Logged out",
   });
 });
