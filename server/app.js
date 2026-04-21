@@ -1,9 +1,9 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import authRoutes from "./modules/auth/auth.routes.js";
-import issueRoutes from "./modules/auth/auth.routes.js";
-import notificationRoutes from "./modules/auth/auth.routes.js";
-import userRoutes from "./modules/auth/auth.routes.js";
+import issueRoutes from "./modules/issue/issue.routes.js";
+import notificationRoutes from "./modules/notification/notification.routes.js";
+import userRoutes from "./modules/user/user.routes.js";
 import { errorHandler } from "./middleware/error.middleware.js";
 import cors from "cors";
 

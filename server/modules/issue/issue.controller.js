@@ -1,5 +1,5 @@
 import * as service from "./issue.service.js";
-import { asyncHandler } from "../../utils/asyncHandler.js";
+import { asyncHandler } from "../../utils/AsyncHandler.js";
 
 export const createIssue = asyncHandler(async (req, res) => {
   const issue = await service.createIssue(
