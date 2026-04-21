@@ -35,34 +35,6 @@ export const createIssue = async (data, file, userId) => {
 
 
 
-{/*export const createIssue = async (data, file, userId) => {
-  try {
-    let imageUrl = null;
-
-    if (file) {
-      console.log("📤 Uploading image...");
-      const result = await uploadFromBuffer(file.buffer);
-      console.log("✅ Upload success:", result.secure_url);
-
-      imageUrl = result.secure_url;
-    }
-
-    const issue = await repo.createIssue({
-      ...data,
-      imageUrl,
-      userId,
-    });
-
-    return issue;
-
-  } catch (err) {
-    console.error("🔥 SERVICE ERROR:", err.message);
-    console.error(err.stack);
-
-    throw err; // 🚨 VERY IMPORTANT
-  }
-}; */}
-
 export const getAllIssues = async (status) => {
   return repo.findAllIssues({
     status: status || undefined,
