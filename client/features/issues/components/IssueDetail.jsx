@@ -2,16 +2,22 @@ import React from 'react'
 import { IoArrowBack } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { useRole } from '@/hooks/useRole';
+import { useResolveIssue, useAssignIssue } from "@/features/issues/hooks";
+import AgentSelect from "./AgentSelect";
+import { useState } from "react";
 
 const IssueDetail = ({ issue }) => {
-
+    
+    const assign = useAssignIssue();
+    const resolve = useResolveIssue();
+    const [agentId, setAgentId] = useState("");
     const router = useRouter()
     const {isAdmin, isAgent} = useRole()
 
      const navigate = isAdmin
     ? "/issues"
     : isAgent
-    ? "/issues/assignment"
+    ? "/issues/respond"
     : "/issues/my";
 
 
@@ -52,6 +58,33 @@ const IssueDetail = ({ issue }) => {
       <p className="mt-6 text-gray-600 leading-relaxed">
         {issue.description}
       </p>
+
+
+      {isAdmin ? (
+        <div className="space-x-2">
+          <AgentSelect onSelect={setAgentId} />
+      
+          <button
+            disabled={!agentId}
+            onClick={() =>
+              assign.mutate({
+                issueId: issue.id,
+                agentId,
+              })
+            }
+            className="bg-blue-500 text-white px-3 py-1"
+          >
+            Assign
+          </button>
+        </div>
+      ) : isAgent ? (
+        <button
+          onClick={() => resolve.mutate(issue.id)}
+          className="bg-green-500 text-white px-3 py-1"
+        >
+          Resolve
+        </button>
+      ) : null}
 
 
     </div>

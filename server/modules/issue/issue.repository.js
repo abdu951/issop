@@ -33,3 +33,10 @@ export const findUserIssues = (userId) => {
     orderBy: { createdAt: "desc" },
   });
 };
+
+export const findAgentIssues = (assignedToId) => {
+  return prisma.issue.findMany({
+    where: { assignedToId },
+    orderBy: { updatedAt: "desc" },
+  });
+};

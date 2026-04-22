@@ -16,7 +16,7 @@ export default function AgentSelect({ onSelect }) {
 
       {data?.map((agent) => (
         <option key={agent.id} value={agent.id}>
-          {agent.email}
+          {agent.name}
         </option>
       ))}
     </select>

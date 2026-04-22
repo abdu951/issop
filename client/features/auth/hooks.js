@@ -39,7 +39,7 @@ export const useLogin = () => {
       if (user.role === "ADMIN") {
         router.push("/issues");
       } else if (user.role === "AGENT") {
-        router.push("/issues/assign");
+        router.push("/issues/respond");
       } else {
         router.push("/issues/my");
       }

@@ -26,6 +26,11 @@ export const getMyIssues = asyncHandler(async (req, res) => {
   res.json(issues);
 });
 
+export const getAgentIssues = asyncHandler(async (req, res) => {
+  const issues = await service.getAgentIssues(req.user.id);
+  res.json(issues);
+});
+
 export const assignAgent = asyncHandler(async (req, res) => {
   const result = await service.assignAgent(
     req.body.issueId,

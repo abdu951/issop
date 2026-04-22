@@ -7,6 +7,7 @@ import {
   resolveIssue,
   assignAgent,
   respondToIssue,
+  getAgentIssues
 } from "./issue.controller.js";
 import { authorizeRoles } from "../../middleware/role.middleware.js";
 
@@ -20,9 +21,10 @@ router.post("/", authenticate, authorizeRoles("CITIZEN"), upload.single("image")
 
 
 router.get("/me", authenticate, authorizeRoles("CITIZEN"), getMyIssues);
+router.get("/agent", authenticate, authorizeRoles("AGENT"), getAgentIssues);
 
 
-router.get("/", authenticate, authorizeRoles("ADMIN"), getAllIssues);
+router.get("/", authenticate, authorizeRoles("ADMIN", "AGENT"), getAllIssues);
 
 
 router.get("/:id", authenticate, getIssueById);

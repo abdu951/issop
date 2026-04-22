@@ -1,12 +1,14 @@
 "use client";
 
 
-import { useMyIssues } from "@/features/issues/hooks";
+
+import { useAgentIssues } from "@/features/issues/hooks";
 import IssueCard from "@/features/issues/components/IssueCard";
 
-export default function MyIssuePage() {
 
-  const { data, isLoading } = useMyIssues();
+export default function IssuesResolvePage() {
+
+  const { data, isLoading } = useAgentIssues();
   const issues= data || [];
 
   return (

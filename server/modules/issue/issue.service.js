@@ -53,6 +53,10 @@ export const getMyIssues = async (userId) => {
   return repo.findUserIssues(userId);
 };
 
+export const getAgentIssues = async (assignedToId) => {
+  return repo.findAgentIssues(assignedToId);
+};
+
 export const assignAgent = async (issueId, agentId) => {
   const issue = await repo.findIssueById(issueId);
 

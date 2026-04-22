@@ -1,17 +1,14 @@
 "use client";
 
-import { useRespondToIssue } from "../hooks";
-import { useRole } from "@/hooks/useRole";
-import { useAuthStore } from "@/features/auth/store";
+import { useRespondToIssue } from "@/features/issues/hooks";
+import { useRouter } from "next/navigation";
+
 
 export default function IssueActions({ issue }) {
-  const { isAgent } = useRole();
-  const user = useAuthStore((s) => s.user);
+
   const { mutate, isPending } = useRespondToIssue();
-
-  if (!isAgent || issue.assignedToId !== user?.id) return null;
-
-  if (issue.status !== "PENDING") return null;
+  const router = useRouter();
+ 
 
   const handleAction = (action) => {
     mutate({
@@ -21,7 +18,13 @@ export default function IssueActions({ issue }) {
   };
 
   return (
-    <div className="flex gap-2 mt-3">
+    
+      <div className="border p-4 rounded cursor-pointer" onClick={() => router.push(`/issues/${issue.id}`)}>
+      <h2 className="font-bold">{issue.title}</h2>
+      <p>{issue.description}</p>
+      <p className="text-sm">{issue.location}</p>
+      <p>Status: {issue.status}</p>
+     <div className="flex gap-2 mt-3">
       <button
         disabled={isPending}
         onClick={() => handleAction("accept")}
@@ -37,6 +40,7 @@ export default function IssueActions({ issue }) {
       >
         Reject
       </button>
+    </div>
     </div>
   );
 }

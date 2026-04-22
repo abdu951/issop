@@ -8,6 +8,7 @@ import {
   resolveIssue,
   respondToIssue,
   FilterGet,
+  getAgentIssues
 } from "./api";
 
 import toast from "react-hot-toast"
@@ -22,7 +23,7 @@ export const useAllIssues = () =>
   });
 
 
-
+// FILTER
 export const useFilterGet = (status) => {
   return useQuery({
     queryKey: ["issues", status], // 🔥 VERY IMPORTANT
@@ -39,12 +40,24 @@ export const useIssueById = (id) =>
     queryFn: () => getIssueById(id),
   });
 
+
+
 // GET MY
 export const useMyIssues = () =>
   useQuery({
     queryKey: ["my-issues"],
     queryFn: getMyIssues,
   });
+
+
+  // GET agent issues
+export const useAgentIssues = () =>
+  useQuery({
+    queryKey: ["agent-issues"],
+    queryFn: getAgentIssues,
+  });
+
+  
 
 // CREATE
 export const useCreateIssue = () => {

@@ -36,6 +36,14 @@ export const getMyIssues = async () => {
   return res.data;
 };
 
+
+// get agent issues
+export const getAgentIssues = async () => {
+  const res = await api.get("/issues/agent");
+  return res.data;
+};
+
+
 // assign issue
 export const assignIssue = async (data) => {
   const res = await api.post("/issues/assign", data);
@@ -49,5 +57,5 @@ export const resolveIssue = async (issueId) => {
 };
 
 export const respondToIssue = (data) => {
-  return api.patch("/issues/respond", data);
+  return api.post("/issues/respond", data);
 };
