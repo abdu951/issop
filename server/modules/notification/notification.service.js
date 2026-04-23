@@ -34,7 +34,7 @@ export const markNotificationAsRead = async (id, userId) => {
     throw new AppError("Notification not found", 404);
   }
 
-  // 🔐 ownership check
+  // ownership check
   if (notification.userId !== userId) {
     throw new AppError("Unauthorized", 403);
   }

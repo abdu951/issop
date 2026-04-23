@@ -11,7 +11,7 @@ export const initSocket = (server) => {
     },
   });
 
-  // 🔐 Auth middleware for socket
+  // Auth middleware for socket
   io.use((socket, next) => {
     const token = socket.handshake.auth.token;
 
@@ -29,7 +29,7 @@ export const initSocket = (server) => {
   io.on("connection", (socket) => {
     console.log("User connected:", socket.user.id);
 
-    // 🔥 join room = userId
+    // join room = userId
     socket.join(socket.user.id);
 
     socket.on("disconnect", () => {
