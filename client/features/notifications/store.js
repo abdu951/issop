@@ -15,4 +15,5 @@ export const useNotificationStore = create((set) => ({
       notifications: data,
       unread: data.filter((n) => !n.isRead).length,
     }),
-}));
+})
+);

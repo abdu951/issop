@@ -27,14 +27,16 @@ export const useRegister = () => {
 export const useLogin = () => {
   const router = useRouter();
   const setUser = useAuthStore((s) => s.setUser);
+  
 
   return useMutation({
     mutationFn: loginUser,
 
     onSuccess: (res) => {
-      const user = res.data.user; 
+      const user = res.data.user;
       
       setUser(user);
+      
 
       if (user.role === "ADMIN") {
         router.push("/issues");

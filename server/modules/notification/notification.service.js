@@ -20,7 +20,9 @@ export const createNotification = async ({
   const io = getIO();
   io.to(userId).emit("notification", notification);
 
-  return notification;
+
+  console.log("Emitting to:", userId);
+  return notification ;
 };
 
 export const getMyNotifications = async (userId) => {

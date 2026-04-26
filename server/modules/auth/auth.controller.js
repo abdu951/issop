@@ -26,7 +26,9 @@ export const login = asyncHandler(async (req, res) => {
     })
     .json({
       message: "Logged in",
-      user: { role: user.role },
+      user: {
+        role: user.role
+      },
     });
 });
 

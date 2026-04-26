@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+{/*import { useQuery } from "@tanstack/react-query";
 import { getNotifications } from "./api";
 import { useNotificationStore } from "./store";
 
@@ -12,4 +12,27 @@ export const useNotifications = () => {
       setNotifications(data);
     },
   });
+};   */}
+
+
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { getNotifications } from "./api";
+import { useNotificationStore } from "./store";
+
+export const useNotifications = () => {
+  const setNotifications = useNotificationStore((s) => s.setNotifications);
+
+  const { data } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: getNotifications,
+  });
+
+  useEffect(() => {
+    if (data) {
+      setNotifications(data);
+    }
+  }, [data, setNotifications]);
+
+  return { data };
 };

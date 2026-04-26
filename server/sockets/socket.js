@@ -1,25 +1,38 @@
 import { Server } from "socket.io";
 import jwt from "jsonwebtoken";
+import cookie from "cookie";
 
 let io;
 
 export const initSocket = (server) => {
   io = new Server(server, {
     cors: {
-      origin: "*",
+      origin: "http://localhost:3000",
       credentials: true,
     },
   });
 
-  // Auth middleware for socket
   io.use((socket, next) => {
-    const token = socket.handshake.auth.token;
-
-    if (!token) return next(new Error("Unauthorized"));
-
     try {
-      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+      const cookies = socket.handshake.headers.cookie;
+
+      if (!cookies) return next(new Error("No cookies"));
+
+      const parsed = cookie.parse(cookies);
+
+      const token = parsed.accessToken; 
+
+      console.log("Cookie token:", token);
+
+      if (!token) return next(new Error("Unauthorized"));
+
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_ACCESS_TOKEN_SECRET
+      );
+
       socket.user = decoded;
+
       next();
     } catch (err) {
       next(new Error("Invalid token"));
@@ -29,7 +42,7 @@ export const initSocket = (server) => {
   io.on("connection", (socket) => {
     console.log("User connected:", socket.user.id);
 
-    // join room = userId
+    // join room
     socket.join(socket.user.id);
 
     socket.on("disconnect", () => {

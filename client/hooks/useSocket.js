@@ -1,27 +1,38 @@
 import { useEffect } from "react";
 import { connectSocket } from "@/lib/socket";
-import { useAuthStore } from "@/features/auth/store";
 import { useNotificationStore } from "@/features/notifications/store";
+import { useAuthStore } from "@/features/auth/store";
 import toast from "react-hot-toast";
 
 export const useSocket = () => {
-  const token = useAuthStore((s) => s.token);
   const addNotification = useNotificationStore((s) => s.addNotification);
+  const user = useAuthStore((s) => s.user);
+
 
   useEffect(() => {
-    if (!token) return;
+    
+    if (!user) return; 
+    const socket = connectSocket();
 
-    const socket = connectSocket(token);
+    socket.on("connect", () => {
+      console.log("Socket connected:", socket.id);
+    });
 
-    socket.on("notification", (data) => {
-      addNotification(data);
-      toast.success(data.message);
+    socket.on("notification", (notif) => {
+      console.log("Realtime:", notif);
+
+      addNotification(notif);
+      toast.success(notif.message);
+    });
+
+    socket.on("connect_error", (err) => {
+      console.log("Socket error:", err.message);
     });
 
     return () => {
       socket.disconnect();
     };
-  }, [token]);
+  }, [user]);
 };
 
 

@@ -5,10 +5,13 @@ import { useGetMe } from "@/features/auth/hooks";
 import { useSocket } from "@/hooks/useSocket";
 import Navbar from "@/components/layout/Navbar";
 import Sidebar from "@/components/layout/Sidebar";
+import { useNotifications } from "@/features/notifications/hooks";
+
 
 export default function DashboardLayout({ children }) {
   const { isLoading } = useGetMe();
   useSocket();
+  useNotifications();
 
 
   if (!isLoading) {

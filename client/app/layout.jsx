@@ -5,7 +5,9 @@ import { queryClient } from "@/lib/react-query";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 
+
 export default function RootLayout({ children }) {
+  
   return (
     <html lang="en">
       <body>
@@ -16,4 +18,4 @@ export default function RootLayout({ children }) {
       </body>
     </html>
   );
-}
+};
