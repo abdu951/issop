@@ -11,7 +11,7 @@ export const useAuthStore = create(
       logout: () => set({ user: null }),
     }),
     {
-      name: "auth-storage", 
+      name: "auth-storage",     
     }
   )  
 );
