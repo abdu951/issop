@@ -1,45 +1,31 @@
 "use client";
 
-import { useRespondToIssue } from "@/features/issues/hooks";
 import { useRouter } from "next/navigation";
+import { useResolveIssue } from "@/features/issues/hooks";
 
 
 export default function IssueActions({ issue }) {
 
-  const { mutate, isPending } = useRespondToIssue();
   const router = useRouter();
+  const resolve = useResolveIssue();
  
-
-  const handleAction = (action) => {
-    mutate({
-      issueId: issue.id,
-      action,
-    });
-  };
 
   return (
     
-      <div className="border p-4 rounded cursor-pointer" onClick={() => router.push(`/issues/${issue.id}`)}>
+      <div className="border p-4 rounded cursor-pointer">
       <h2 className="font-bold">{issue.title}</h2>
       <p>{issue.description}</p>
       <p className="text-sm">{issue.location}</p>
       <p>Status: {issue.status}</p>
      <div className="flex gap-2 mt-3">
+      <button className="cursor-pointer bg-blue-600 text-white px-3 py-1 rounded" 
+      onClick={() => router.push(`/issues/${issue.id}`)}>View more</button>
       <button
-        disabled={isPending}
-        onClick={() => handleAction("accept")}
-        className="px-3 py-1 bg-green-600 text-white rounded"
-      >
-        Accept
-      </button>
-
-      <button
-        disabled={isPending}
-        onClick={() => handleAction("reject")}
-        className="px-3 py-1 bg-red-600 text-white rounded"
-      >
-        Reject
-      </button>
+          onClick={() => resolve.mutate(issue.id)}
+          className="bg-green-500 text-white px-3 py-1"
+        >
+          Resolve
+        </button>
     </div>
     </div>
   );

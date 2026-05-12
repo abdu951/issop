@@ -92,6 +92,7 @@ export const respondToIssue = async (issueId, action, userId) => {
   return repo.updateIssue(issueId, { status });
 };
 
+
 export const resolveIssue = async (issueId, userId) => {
   const issue = await repo.findIssueById(issueId);
 
@@ -111,4 +112,21 @@ export const resolveIssue = async (issueId, userId) => {
   });
 
   return updated;
+};
+
+
+// logic for updating issue, by it's image file, description, location, title 
+export const updateIssue = async (issueId, data, file, userId) => {
+  const issue = await repo.findIssueById(issueId);
+
+  
+
+  let imageUrl = issue.imageUrl;
+
+  if (file) {
+    const result = await uploadFromBuffer(file.buffer);
+    imageUrl = result.secure_url;
+  }
+
+  return repo.updateIssue(issueId, { ...data, imageUrl });
 };

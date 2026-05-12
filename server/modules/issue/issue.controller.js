@@ -48,9 +48,22 @@ export const respondToIssue = asyncHandler(async (req, res) => {
   res.json(result);
 });
 
+
 export const resolveIssue = asyncHandler(async (req, res) => {
   const result = await service.resolveIssue(
     req.body.issueId,
+    req.user.id
+  );
+  res.json(result);
+});
+
+
+// controller functions for updateIssue
+export const updateIssue = asyncHandler(async (req, res) => {
+  const result = await service.updateIssue(
+    req.params.id,
+    req.body,
+    req.file,
     req.user.id
   );
   res.json(result);

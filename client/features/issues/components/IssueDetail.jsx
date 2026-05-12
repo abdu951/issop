@@ -2,16 +2,16 @@ import React from 'react'
 import { IoArrowBack } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { useRole } from '@/hooks/useRole';
-import { useResolveIssue, useAssignIssue } from "@/features/issues/hooks";
+import { useAssignIssue, useRespondToIssue } from "@/features/issues/hooks";
 import AgentSelect from "./AgentSelect";
 import { useState } from "react";
 
 const IssueDetail = ({ issue }) => {
     
     const assign = useAssignIssue();
-    const resolve = useResolveIssue();
     const [agentId, setAgentId] = useState("");
     const router = useRouter()
+    const { mutate, isPending } = useRespondToIssue();
     const {isAdmin, isAgent} = useRole()
 
      const navigate = isAdmin
@@ -19,6 +19,14 @@ const IssueDetail = ({ issue }) => {
     : isAgent
     ? "/issues/respond"
     : "/issues/my";
+
+
+    const handleAction = (action) => {
+    mutate({
+      issueId: issue.id,
+      action,
+    });
+  };
 
 
   return (
@@ -78,12 +86,28 @@ const IssueDetail = ({ issue }) => {
           </button>
         </div>
       ) : isAgent ? (
-        <button
-          onClick={() => resolve.mutate(issue.id)}
-          className="bg-green-500 text-white px-3 py-1"
-        >
-          Resolve
-        </button>
+        <div className="flex gap-2 mt-3">
+
+      <button
+        disabled={isPending}
+        onClick={() => {
+          handleAction("accept")
+          router.push(`/issues/resolve/${issue.id}`)
+        }}
+        className="px-3 py-1 bg-green-600 text-white rounded"
+      >
+        Accept
+      </button>
+
+      <button
+        disabled={isPending}
+        onClick={() => handleAction("reject")}
+        className="px-3 py-1 bg-red-600 text-white rounded"
+      >
+        Reject
+      </button>
+    </div>
+
       ) : null}
 
 

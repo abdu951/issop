@@ -8,7 +8,8 @@ import {
   resolveIssue,
   respondToIssue,
   FilterGet,
-  getAgentIssues
+  getAgentIssues,
+  updateIssue,
 } from "./api";
 
 import toast from "react-hot-toast"
@@ -112,6 +113,38 @@ export const useRespondToIssue = () => {
 
     onError: (err) => {
       toast.error(err.response?.data?.message || "Action failed");
+    },
+  });
+};
+
+
+// UPDATE
+{/*export const useUpdateIssue = () => {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateIssue,
+    onSuccess: () => {
+      toast.success("Issue updated successfully");
+      qc.invalidateQueries(["issues"]);
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.message || "Failed to update issue");
+    },
+  });
+}; */}
+
+
+export const useUpdateIssue = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateIssue,
+
+    onSuccess: () => {
+      // 🔁 refetch updated data
+      queryClient.invalidateQueries(["issues"]);
+      queryClient.invalidateQueries(["issue"]);
     },
   });
 };

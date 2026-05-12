@@ -59,3 +59,19 @@ export const resolveIssue = async (issueId) => {
 export const respondToIssue = (data) => {
   return api.post("/issues/respond", data);
 };
+
+
+
+export const updateIssue = async ({ id, formData }) => {
+  const res = await api.patch(
+    `/issues/resolve/${id}`, // ✅ correct ID in URL
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return res.data;
+};

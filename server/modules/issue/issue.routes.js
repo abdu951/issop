@@ -7,7 +7,8 @@ import {
   resolveIssue,
   assignAgent,
   respondToIssue,
-  getAgentIssues
+  getAgentIssues,
+  updateIssue,
 } from "./issue.controller.js";
 import { authorizeRoles } from "../../middleware/role.middleware.js";
 
@@ -37,5 +38,8 @@ router.post("/assign", authenticate, authorizeRoles("ADMIN"), assignAgent);
 
 
 router.post("/respond", authenticate, authorizeRoles("AGENT"), respondToIssue);
+
+// routes for updateIssue
+router.patch("/resolve/:id", authenticate, authorizeRoles("AGENT"), upload.single("image"), updateIssue);
 
 export default router;
