@@ -72,5 +72,5 @@ model Notification {
   issue Issue? @relation(fields: [issueId], references: [id])
 
   createdAt DateTime @default(now())
-}
+}   
   
