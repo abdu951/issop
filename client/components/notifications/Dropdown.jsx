@@ -31,7 +31,7 @@ export default function NotificationDropdown() {
             }} key={n.id} className="border-b p-2 text-sm cursor-pointer">
               {n.message}
             </div>
-          ))}
+          ))}   
         </div>
       )}        
     </div>
