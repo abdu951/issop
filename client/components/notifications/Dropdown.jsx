@@ -32,7 +32,7 @@ export default function NotificationDropdown() {
               {n.message}
             </div>
           ))}            
-        </div>
+        </div>     
       )}        
     </div>
   );
