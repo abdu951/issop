@@ -34,6 +34,6 @@ export default function NotificationDropdown() {
           ))}            
         </div>     
       )}          
-    </div>
+    </div>        
   );
 }
