@@ -46,4 +46,4 @@ export const markNotificationAsRead = async (id, userId) => {
 
 export const markAllNotificationsAsRead = async (userId) => {
   return repo.markAllAsRead(userId);
-};
+};   
